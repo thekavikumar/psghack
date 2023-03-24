@@ -1,18 +1,23 @@
 import React, { useEffect } from "react";
 import "./Profile.css";
-import { doc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs } from "firebase/firestore";
 import { auth, db } from "../../firebase";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [data, setData] = React.useState([]);
   const user = auth.currentUser;
+  const userName = user.displayName;
+  const refUser = userName.split(" ").join("");
   const getData = async () => {
-    const docsSnap = await getDocs(`${user.displayName}`);
+    const colRef = collection(db, `${refUser}`);
+    const docsSnap = await getDocs(colRef);
     docsSnap.forEach((doc) => {
-      console.log(doc.id);
+      setData((prev) => [...prev, doc.data().form]);
     });
   };
-
   useEffect(() => {
     getData();
   }, []);
@@ -24,30 +29,45 @@ const Profile = () => {
       </h2>
       <ul class="responsive-table mt-7">
         <li class="table-header">
-          <div class="col col-1">UID</div>
+          <div class="col col-2">UID</div>
           <div class="col col-2">Name</div>
           <div class="col col-3">Amount</div>
           <div class="col col-3">Type</div>
           <div class="col col-4">Payment Status</div>
         </li>
-        <li class="table-row">
-          <div class="col col-1" data-label="Job Id">
-            42235
-          </div>
-          <div class="col col-2" data-label="Customer Name">
-            John Doe
-          </div>
-          <div class="col col-3" data-label="Amount">
-            $350
-          </div>
-          <div class="col col-3" data-label="Type">
-            Desposit
-          </div>
-          <div class="col col-4" data-label="Payment Status">
-            Pending
-          </div>
-        </li>
+        {data.map((item) => {
+          return (
+            <li class="table-row">
+              <div class="col col-2" data-label="Job Id">
+                {item.uuid}
+              </div>
+              <div class="col col-2" data-label="Customer Name">
+                {item.name}
+              </div>
+              <div class="col col-3" data-label="Amount">
+                {item.amount}
+              </div>
+              <div class="col col-3" data-label="Type">
+                {item.typeTran}
+              </div>
+              <div class="col col-4" data-label="Payment Status">
+                {item.status}
+              </div>
+            </li>
+          );
+        })}
       </ul>
+      <div className="flex items-center justify-center mx-auto mt-4">
+        <button
+          onClick={() => {
+            signOut(auth);
+            navigate("/");
+          }}
+          className="border-2 border-collapse border-gray-800 pt-2 pb-2 pr-3 pl-3 rounded hover:bg-gray-900 hover:text-white"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

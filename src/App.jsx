@@ -10,7 +10,7 @@ function App() {
         <Navbar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/transaction" element={<Trans />} />
+          {user && <Route path="/transaction" element={<Trans />} />}
           {user && <Route path="/profile" element={<Profile user={user} />} />}
         </Routes>
       </div>

@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 const Trans = () => {
   const user = auth.currentUser;
+  const userName = user.displayName;
+  const refUser = userName.split(" ").join("");
+
   const navigate = useNavigate();
   const [form, setForm] = useState({
     uuid: shortid.generate(),
@@ -24,7 +27,7 @@ const Trans = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const docRef = await addDoc(collection(db, `${user.displayName}`), {
+      const docRef = await addDoc(collection(db, `${refUser}`), {
         form,
       });
       console.log("Document written with ID: ", docRef.id);
