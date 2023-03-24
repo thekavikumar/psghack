@@ -20,10 +20,10 @@ const Profile = () => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   return (
-    <div class="container max-w-5xl">
+    <div class="container max-w-6xl">
       <h2 className="text-[40px] mt-6 font-bold text-gray-700">
         Your Transactions
       </h2>
@@ -31,6 +31,7 @@ const Profile = () => {
         <li class="table-header">
           <div class="col col-2">UID</div>
           <div class="col col-2">Name</div>
+          <div class="col col-2">A/C NO</div>
           <div class="col col-3">Amount</div>
           <div class="col col-3">Type</div>
           <div class="col col-4">Payment Status</div>
@@ -43,6 +44,9 @@ const Profile = () => {
               </div>
               <div class="col col-2" data-label="Customer Name">
                 {item.name}
+              </div>
+              <div class="col col-2" data-label="Customer Name">
+                {item.acno}
               </div>
               <div class="col col-3" data-label="Amount">
                 {item.amount}
