@@ -21,9 +21,11 @@ const Home = () => {
             increase transparency.
           </p>
           <div className="flex items-center gap-5 mt-5">
-            <button className="btn1">
-              <span className="btnspan">Manage</span>
-            </button>
+            <Link to="/manage">
+              <button className="btn1">
+                <span className="btnspan">Manage</span>
+              </button>
+            </Link>
             <Link to="/transaction">
               <button className="btn1">
                 <span className="btnspan">Do Transactions</span>
